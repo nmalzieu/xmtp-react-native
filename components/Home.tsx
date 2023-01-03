@@ -38,6 +38,23 @@ const Home = () => {
   });
 
   useEffect(() => {
+    const checkConversations = async () => {
+      if (!client) {
+        return;
+      }
+      const now = new Date().getTime();
+      console.log('Checking the conversations...');
+      const convos = await client.conversations.list();
+      console.log(`Done - ${convos.length} convos`);
+      const after = new Date().getTime();
+      const duration = (after - now) / 1000;
+      console.log(`Took ${duration} seconds`);
+      Alert.alert(`Took ${duration} seconds`);
+    };
+    checkConversations();
+  }, [client]);
+
+  useEffect(() => {
     if (connector?.connected && !signer) {
       const requestSignatures = async () => {
         await provider.enable();
